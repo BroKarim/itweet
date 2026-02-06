@@ -63,10 +63,21 @@ class SelectorService:
 
     @staticmethod
     def _parse_response(raw: str, repos: List[TrendingRepo], limit: int) -> List[SelectedRepo]:
+        raw = raw.strip()
+        data = None
         try:
             data = json.loads(raw)
-        except json.JSONDecodeError as exc:
-            raise SelectorServiceError("AI response was not valid JSON.") from exc
+        except json.JSONDecodeError:
+            # Common failure mode: model wraps JSON with prose or code fences.
+            start = raw.find("[")
+            end = raw.rfind("]")
+            if start != -1 and end != -1 and end > start:
+                try:
+                    data = json.loads(raw[start : end + 1])
+                except json.JSONDecodeError as exc:
+                    raise SelectorServiceError("AI response was not valid JSON.") from exc
+            else:
+                raise SelectorServiceError("AI response was not valid JSON.")
 
         if not isinstance(data, list):
             raise SelectorServiceError("AI response JSON must be a list.")
