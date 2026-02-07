@@ -7,14 +7,15 @@ iTweet is a CLI tool to fetch trending sources (starting with GitHub Trending) a
 ### 1. Requirements
 - Python 3.8+
 
-### 2. Setup (venv)
+### 2. Install from GitHub (recommended)
+```bash
+pip install git+https://github.com/BroKarim/itweet.git
+```
+
+### 3. Setup (venv) - Alternative method
 ```bash
 python3 -m venv venv
 ./venv/bin/pip install -r requirements.txt
-```
-
-### 3. Install (editable dev)
-```bash
 ./venv/bin/pip install -e .
 ```
 

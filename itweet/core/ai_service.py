@@ -26,7 +26,8 @@ class AIService:
             model: OpenRouter model name.
         """
         self.config_manager = ConfigManager()
-        self.api_key = api_key or self._get_api_key_from_env() or self.config_manager.get_api_key()
+        raw_key = api_key or self._get_api_key_from_env() or self.config_manager.get_api_key()
+        self.api_key = self._normalize_api_key(raw_key)
         self.model = model
         self.api_url = "https://openrouter.ai/api/v1/chat/completions"
 
@@ -41,6 +42,14 @@ class AIService:
             if key:
                 return key
         return None
+
+    @staticmethod
+    def _normalize_api_key(api_key: Optional[str]) -> Optional[str]:
+        if not api_key:
+            return None
+        # Remove common invisible characters from copy/paste (ZWSP, BOM) and trim.
+        cleaned = api_key.replace("\u200b", "").replace("\ufeff", "").strip()
+        return cleaned or None
 
     def validate_api_key(self) -> bool:
         return self.api_key is not None and len(self.api_key) > 0
