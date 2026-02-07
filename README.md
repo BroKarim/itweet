@@ -88,5 +88,11 @@ itweet github --tweets --json
 --json         also save tweets to JSON
 ```
 
+## ✅ Roadmap 
+- [ ] Improve prompt quality (more natural).
+- [ ] Add non-GitHub sources (Hacker News).
+- [ ] Add non-GitHub sources (daily.dev).
+- [ ] Simplify CLI command / UX.
+
 ## 📄 License
 This project is open-source and licensed under the MIT License.

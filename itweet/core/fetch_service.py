@@ -38,7 +38,10 @@ class FetchService:
         url = self._build_github_url(since=since, language=language)
         headers = {"User-Agent": "Mozilla/5.0"}
 
-        response = requests.get(url, headers=headers, timeout=self.timeout_seconds)
+        try:
+            response = requests.get(url, headers=headers, timeout=self.timeout_seconds)
+        except requests.RequestException as exc:
+            raise FetchServiceError(f"Network error while fetching GitHub Trending: {exc}") from exc
         if response.status_code != 200:
             raise FetchServiceError(f"Failed to fetch GitHub Trending: {response.status_code}")
 

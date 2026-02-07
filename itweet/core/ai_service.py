@@ -76,7 +76,7 @@ class AIService:
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json",
-            "HTTP-Referer": "https://github.com/yourusername/itweet",
+            "HTTP-Referer": "https://github.com/BroKarim/itweet",
             "X-Title": "iTweet",
         }
 

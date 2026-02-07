@@ -24,7 +24,7 @@ class PromptService:
         Build a prompt that generates a tweet (or short thread) based on repo metadata + README.
         """
         base = (
-            "You are writing tweets in Indonesian (casual tone) about open-source repositories.\n"
+            "You are writing tweets in Indonesian about open-source repositories.\n"
             f"Tone: {req.tone}. Max length per tweet: {req.max_chars} chars.\n"
             "Be accurate. Do not invent facts not supported by README or description.\n"
             "If unsure, keep it high-level.\n"

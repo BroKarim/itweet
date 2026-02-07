@@ -7,7 +7,7 @@ setup(
     name="itweet",
     version="0.1.0",
     author="BroKarim",
-    author_email="kiram@example.com",  # Ganti dengan email yang valid jika tersedia
+    author_email="brokariim@egmail.com", 
     description="CLI tool to fetch trending sources and generate tweet drafts",
     long_description=long_description,
     long_description_content_type="text/markdown",
