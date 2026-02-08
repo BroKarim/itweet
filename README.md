@@ -38,18 +38,27 @@ itweet github
 itweet github --since daily --lang python
 ```
 
-### 3) Limit and pick
+### 3) Choose tweet output language
+```bash
+# default is English
+itweet github --tweets --tweet-lang Indonesian
+```
+Notes:
+- You can use common names or aliases like `Indonesian`, `Bahasa Indonesia`, `id`, `Malay`, `Melayu`, `ms`.
+- If the input is unknown, the raw value will be passed to the model as-is.
+
+### 4) Limit and pick
 ```bash
 # consider top 20, AI picks 4 repos
 itweet github --limit 20 --pick 4
 ```
 
-### 4) Only list (skip AI)
+### 5) Only list (skip AI)
 ```bash
 itweet github --list-only
 ```
 
-### 5) Generate tweet drafts
+### 6) Generate tweet drafts
 ```bash
 # single tweet per repo (default tone: informative)
 itweet github --tweets
@@ -58,12 +67,12 @@ itweet github --tweets
 itweet github --tweets --tone casual --max-chars 240
 ```
 
-### 6) Generate thread drafts
+### 7) Generate thread drafts
 ```bash
 itweet github --tweets --thread
 ```
 
-### 7) Save output
+### 8) Save output
 ```bash
 # save tweets to text file
 itweet github --tweets --output my_tweets.txt
@@ -76,6 +85,7 @@ itweet github --tweets --json
 ```text
 --since        daily | weekly | monthly   (default: daily)
 --lang         filter by language (optional)
+--tweet-lang   output language for generated tweets (default: English)
 --limit        how many repos to consider (default: 25)
 --pick         how many repos AI picks (default: 4)
 --readme-chars max README chars to fetch (default: 6000)

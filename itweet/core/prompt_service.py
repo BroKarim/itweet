@@ -13,6 +13,7 @@ class TweetRequest:
     stars: int
     stars_today: int
     readme_text: str
+    output_language: str = "English"
     tone: str = "informative"
     max_chars: int = 280
     thread: bool = False
@@ -24,12 +25,18 @@ class PromptService:
         Build a prompt that generates a tweet (or short thread) based on repo metadata + README.
         """
         base = (
-            "You are writing tweets in Indonesian about open-source repositories.\n"
+            f"You are writing tweets in {req.output_language} about open-source repositories.\n"
+            "Write in casual, informal language. Sound like a Twitter influencer, but stay informative.\n"
             f"Tone: {req.tone}. Max length per tweet: {req.max_chars} chars.\n"
             "Be accurate. Do not invent facts not supported by README or description.\n"
             "If unsure, keep it high-level.\n"
             "Structure:\n"
             "1) Opening line that is catchy and relevant.\n"
+            "   Vary the opening across outputs. Pick ONE style each time:\n"
+            "   - Problem hook: start from a clear pain/issue the repo solves.\n"
+            "   - Storytelling: a short mini-story or relatable scenario.\n"
+            "   - Benefit-first: lead with the most concrete benefit.\n"
+            "   Keep it natural, not textbook/theory. Avoid generic phrases.\n"
             "2) GitHub link on its own line.\n"
             "3) Bullet-style points using lines starting with '> ' (2-5 points).\n"
             "Points can be features, usage steps, or key notes—pick what's most helpful.\n"

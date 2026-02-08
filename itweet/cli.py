@@ -16,6 +16,43 @@ from .core.output_writer import OutputWriter, OutputWriterError
 from .core.selector_service import SelectorService, SelectorServiceError
 
 
+def _normalize_tweet_language(raw: str) -> str:
+    normalized = (raw or "").strip()
+    if not normalized:
+        return "English"
+    key = normalized.lower()
+    aliases = {
+        "en": "English",
+        "english": "English",
+        "id": "Indonesian",
+        "indo": "Indonesian",
+        "indonesia": "Indonesian",
+        "indonesian": "Indonesian",
+        "bahasa indonesia": "Indonesian",
+        "ms": "Malay",
+        "malay": "Malay",
+        "melayu": "Malay",
+        "malaysia": "Malay",
+        "malasyia": "Malay",
+        "es": "Spanish",
+        "spanish": "Spanish",
+        "fr": "French",
+        "french": "French",
+        "de": "German",
+        "german": "German",
+        "ja": "Japanese",
+        "japanese": "Japanese",
+        "jp": "Japanese",
+        "ko": "Korean",
+        "korean": "Korean",
+        "zh": "Chinese",
+        "chinese": "Chinese",
+        "pt": "Portuguese",
+        "portuguese": "Portuguese",
+    }
+    return aliases.get(key, normalized)
+
+
 @click.group(context_settings={"help_option_names": ["-h", "--help"]})
 def main():
     """iTweet CLI entrypoint."""
@@ -36,6 +73,14 @@ def main():
     type=str,
     default=None,
     help="Filter by programming language (optional)",
+)
+@click.option(
+    "--tweet-lang",
+    "tweet_language",
+    type=str,
+    default="English",
+    show_default=True,
+    help="Output language for generated tweets",
 )
 @click.option(
     "--limit",
@@ -114,13 +159,17 @@ def github(
     thread: bool,
     tone: str,
     max_chars: int,
+    tweet_language: str,
     output: Optional[str],
     json_output: bool,
 ):
     """Fetch GitHub Trending, then (optionally) let AI pick top repos and fetch their READMEs."""
+    tweet_language = _normalize_tweet_language(tweet_language)
+
     click.echo("iTweet: GitHub Trending")
     click.echo(f"- since: {since}")
     click.echo(f"- lang: {language or 'all'}")
+    click.echo(f"- tweet language: {tweet_language}")
 
     ai_service = None
     if not list_only:
@@ -217,6 +266,7 @@ def github(
             stars=repo.stars,
             stars_today=repo.stars_today,
             readme_text=readme_text,
+            output_language=tweet_language,
             tone=tone,
             max_chars=max_chars,
             thread=thread,
