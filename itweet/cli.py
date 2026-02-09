@@ -69,18 +69,18 @@ def main():
 )
 @click.option(
     "--lang",
-    "language",
-    type=str,
-    default=None,
-    help="Filter by programming language (optional)",
-)
-@click.option(
-    "--tweet-lang",
     "tweet_language",
     type=str,
     default="English",
     show_default=True,
     help="Output language for generated tweets",
+)
+@click.option(
+    "--code-lang",
+    "language",
+    type=str,
+    default=None,
+    help="Filter by programming language (optional)",
 )
 @click.option(
     "--limit",
@@ -110,10 +110,10 @@ def main():
     help="Only list trending repos (skip AI selection and README fetching)",
 )
 @click.option(
-    "--tweets",
+    "--no-tweets",
     is_flag=True,
     default=False,
-    help="Generate tweet drafts for selected repos",
+    help="Skip tweet generation (only list + AI pick)",
 )
 @click.option(
     "--thread",
@@ -155,7 +155,7 @@ def github(
     pick: int,
     readme_chars: int,
     list_only: bool,
-    tweets: bool,
+    no_tweets: bool,
     thread: bool,
     tone: str,
     max_chars: int,
@@ -168,7 +168,7 @@ def github(
 
     click.echo("iTweet: GitHub Trending")
     click.echo(f"- since: {since}")
-    click.echo(f"- lang: {language or 'all'}")
+    click.echo(f"- code lang: {language or 'all'}")
     click.echo(f"- tweet language: {tweet_language}")
 
     ai_service = None
@@ -247,8 +247,8 @@ def github(
             readme_map[repo.name] = ""
             click.echo(f"  README fetch failed: {exc}\n")
 
-    if not tweets:
-        click.echo("Tip: use --tweets to generate tweet drafts.")
+    if no_tweets:
+        click.echo("Tip: remove --no-tweets to generate tweet drafts.")
         return 0
 
     click.echo("Generating tweet drafts:\n")
